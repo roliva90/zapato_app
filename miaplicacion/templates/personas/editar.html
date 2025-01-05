@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Editar Persona
+{% endblock %}
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Editar Persona</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                <!-- Campo: DNI -->
+                                <div class="mb-3">
+                                    <label for="id_dni" class="form-label">DNI:</label>
+                                    <input id="id_dni" type="text" class="form-control" name="dni" maxlength="11"
+                                        required value="{{ form.dni.value }}">
+                                </div>
+
+                                <!-- Campo: Nombre -->
+                                <div class="mb-3">
+                                    <label for="id_nombre" class="form-label">Nombre:</label>
+                                    <input id="id_nombre" type="text" class="form-control" name="nombre" step="0.01"
+                                        required value="{{ form.nombre.value }}">
+                                </div>
+                                <!-- Campo: Telefono -->
+                                <div class="mb-3">
+                                    <label for="id_telefono" class="form-label">Telefono:</label>
+                                    <input id="id_telefono" type="number" class="form-control" name="telefono"
+                                        step="0.01" required value="{{ form.telefono.value }}">
+                                </div>
+
+                                <!-- Botones -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href="{% url 'listar_personas' %}" class="btn btn-warning ms-2">Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

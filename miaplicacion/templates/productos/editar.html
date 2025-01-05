@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Editar Producto
+{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Editar Producto</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                
+                                <!-- Campo: Nombre -->
+                                <div class="mb-3">
+                                    <label for="id_nombre" class="form-label">Nombre:</label>
+                                    <input id="id_nombre" type="text" class="form-control" name="nombre" value="{{ form.nombre.value }}" maxlength="100" required>
+                                </div>
+                                
+                                <!-- Campo: Color -->
+                                <div class="mb-3">
+                                    <label for="id_color" class="form-label">Color:</label>
+                                    <input id="id_color" type="text" class="form-control" name="color" value="{{ form.color.value }}" maxlength="100" required>
+                                </div>
+
+                                <!-- Campo: Talle -->
+                                <div class="mb-3">
+                                    <label for="id_talle" class="form-label">Talle:</label>
+                                    <input id="id_talle" type="text" class="form-control" name="talle" value="{{ form.talle.value }}" maxlength="100" required>
+                                </div>
+
+                                <!-- Campo: Cantidad Disponible -->
+                                <div class="mb-3">
+                                    <label for="id_cantidad_disponible" class="form-label">Cantidad Disponible:</label>
+                                    <input id="id_cantidad_disponible" type="text" class="form-control" name="cantidad_disponible" value="{{ form.cantidad_disponible.value }}" step="1" min="0" required onkeypress="return validarEntradaNumerica(event)">
+                                </div>
+
+                                <!-- Campo: Precio -->
+                                <div class="mb-3">
+                                    <label for="id_precio" class="form-label">Precio:</label>
+                                    <input id="id_precio" type="text" class="form-control" name="precio" required value="{{ form.precio.value }}" onkeypress="return validarPrecio(event)" onblur="formatearDecimal(event)">
+                                </div>
+
+                                <!-- Botones -->
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    <a href="{% url 'listar_productos' %}" class="btn btn-warning ms-2">Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}
+<script>
+    function validarEntradaNumerica(event) {
+        // Obtener el código de la tecla presionada
+        var keyCode = event.which || event.keyCode;
+        
+        // Permitir teclas de control y números
+        // 8 = Backspace, 46 = Delete, 37 = Left arrow, 39 = Right arrow, 9 = Tab, 13 = Enter
+        // 48-57 = Números del 0 al 9
+        if (keyCode >= 48 && keyCode <= 57 || keyCode === 8 || keyCode === 46 || keyCode === 37 || keyCode === 39 || keyCode === 9 || keyCode === 13) {
+            return true;
+        }
+        
+        // Evitar otros caracteres
+        event.preventDefault();
+        return false;
+    }
+
+    function validarPrecio(event) {
+        const charCode = (event.which) ? event.which : event.keyCode;
+        const inputValue = event.target.value;
+        
+        if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+
+        if (inputValue.indexOf('.') !== -1 && charCode === 46) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    function formatearDecimal(event) {
+        const input = event.target;
+        let valor = input.value;
+
+        valor = valor.replace(/,/g, '.');
+        input.value = valor;
+    }
+
+    function formatearCampoPrecio() {
+        const precioInput = document.getElementById('id_precio');
+        let valor = precioInput.value;
+
+        valor = valor.replace(/,/g, '.');
+        precioInput.value = valor;
+    }
+
+    window.onload = function() {
+        formatearCampoPrecio();
+    }
+</script>
+{{ block.super }}
+{% endblock %}

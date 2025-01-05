@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}<title>Accesso Denegado</title>{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Acceso Denegado </h1>
+                            <div class="wrapper">
+                                <div class="access-denied-card">
+                                    <h2>Acceso Denegado</h2>
+                                    <p>Estimado usuario, usted no tiene permiso suficiente para acceder al recurso
+                                        solicitado.</p>
+                                    <p>Por favor, contacte al administrador del sistema para obtener acceso.</p>
+                                    <a href="{% url 'index' %}" class="btn btn-primary">Regresar al Inicio</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

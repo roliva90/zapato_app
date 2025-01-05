@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+</head>
+<body>
+<header></header>
+{% block content %}
+<div class="container py-4">
+    <div class="card bg-light">
+        <div class="card-header">Listado de Tienda</div>
+        <div class="card-body">
+            <h4 class="card-title">
+                <a href="{% url 'crear_tiendas' %}" class="btn btn-success btn- xs">Nuevo</a>
+            </h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Encargado</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Opción</th>
+                </tr>
+                </thead>
+                <tbody>
+                   {% for tienda in tiendas %} 
+                      <tr>
+                      <th>{{tienda.encargado}}</th>
+                      <th>{{tienda.nombre}}</th>
+                      <th>{{tienda.tipotienda}}</th>
+                      <td>
+                      <a href="{% url 'editar_tiendas' tienda.id %}" class="btn btn-primary btn-xs">Editar</a>
+                      <a href="{% url 'eliminar_tiendas' tienda.id %}" class="btn btn-danger btn-xs">Eliminar</a>
+                      </td>
+                      </tr>
+                </tbody>
+                    {% endfor%}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<footer>{% block footer %} {{block.super}} {% endblock %}</footer>
+</body>
+</html>

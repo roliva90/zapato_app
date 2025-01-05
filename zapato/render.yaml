@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: zapato_app
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn zapato.wsgi"
+    envVars:
+      - key: SECRET_KEY
+        value: your-secret-key
+      - key: DEBUG
+        value: false
+    plan: free
+    autoDeploy: true
+
+  - type: postgres
+    name: zapato_db
+    plan: free
+    region: oregon
+    databaseName: zapato_db
+    user: your_username
+    password: your_password

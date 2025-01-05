@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Listado de Compra-Comercio</title>
+{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center">Listado de Compra-Comercio</h1>
+                            {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Cliente</th>
+                                            <th>Producto</th>
+                                            <th>Cantidad Solicitada</th>
+                                            <th>No. Factura</th>
+                                            <th>Monto</th>
+                                            <th>Fecha</th>
+                                            {% if user.rol.nombre == 'Administrador' %}
+                                            <th>Opción</th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for compracomercio in compracomercios %}
+                                        <tr class="text-center">
+                                            <td>{{ compracomercio.cliente.nombre }}</td>
+                                            <td>{{ compracomercio.producto.nombre }}</td>
+                                            <td>{{ compracomercio.cantidadS }}</td>
+                                            <td>{{ compracomercio.factura }}</td>
+                                            <td>{{ compracomercio.monto }}</td>
+                                            <td>{{ compracomercio.fecha }}</td>
+                                            {% if user.rol.nombre == 'Administrador' %}
+                                            <td>
+                                                <!-- Botón para abrir el modal -->
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#confirmDeleteModal-{{ compracomercio.id }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+
+                                                <!-- Modal de confirmación -->
+                                                <div class="modal fade" id="confirmDeleteModal-{{ compracomercio.id }}"
+                                                    tabindex="-1" role="dialog"
+                                                    aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirmDeleteModalLabel">
+                                                                    Confirmar Eliminación</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar el registro con
+                                                                fecha "<strong>{{ compracomercio.fecha }}</strong>"?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Cancelar</button>
+                                                                <form
+                                                                    action="{% url 'eliminar_compracomercios' compracomercio.id %}"
+                                                                    method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="submit" class="btn btn-danger"
+                                                                        value="Eliminar" />
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Asegúrate de que tienes los scripts de Bootstrap y jQuery incluidos en tu base.html -->
+{% block extra_js %}
+<script>
+    $(document).ready(function () {
+        // Este bloque puede ser útil si necesitas añadir alguna funcionalidad extra al modal
+    });
+</script>
+{% endblock %}
+{% endblock %}

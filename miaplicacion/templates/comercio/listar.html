@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Listado de Comercio</title>
+{% endblock %}
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title" align="center">Listado de Comercio</h1>
+                            {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>RUT</th>
+                                            <th>Encargue</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for comercio in comercios %}
+                                        <tr>
+                                            <td>{{comercio.rut}}</td>
+                                            <td>{{comercio.encargue}}</td>
+                                            <td>{{comercio.cliente.nombre}}</td>
+                                        </tr>
+                                    </tbody>
+                                    {% endfor%}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

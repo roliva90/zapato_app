@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Crear Encargue
+{% endblock %}
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Crear Encargue</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                <!-- Campo: Producto -->
+                                <div class="mb-3">
+                                    <label for="id_producto" class="form-label">Producto:</label>
+                                    <select id="id_producto" class="form-control" name="producto" required>
+                                        <option value="" selected disabled>Selecciona un producto</option>
+                                        {% for producto in productos %}
+                                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- Campo: Fecha -->
+                                <div class="mb-3">
+                                    <label for="id_fecha" class="form-label">Fecha:</label>
+                                    <input id="id_fecha" type="date" class="form-control" name="fecha" maxlength="100"
+                                        required>
+                                </div>
+
+                                <!-- Campo: CantidadProducto -->
+                                <div class="mb-3">
+                                    <label for="id_cantidadproducto" class="form-label">CantidadProducto:</label>
+                                    <input id="id_cantidadproducto" type="number" class="form-control"
+                                        name="cantidadproducto" step="0.01" required>
+                                </div>
+                                <!-- Botones -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href="{% url 'listar_encargues' %}" class="btn btn-warning ms-2">Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

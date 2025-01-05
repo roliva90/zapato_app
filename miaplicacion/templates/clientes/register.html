@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Registrar Cliente
+{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Registrar Cliente</h1>
+                            <form method="post" id="register-form">
+                                {% csrf_token %}
+
+                                <!-- Mostrar errores del formulario de cliente -->
+                                {% if cliente_form.errors %}
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            {% for field in cliente_form %}
+                                                {% for error in field.errors %}
+                                                    <li>{{ field.label }}: {{ error }}</li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                            {% for error in cliente_form.non_field_errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Campos del Cliente -->
+                                <fieldset>
+                                    <legend>Datos del Cliente</legend>
+                                    <div class="form-group">
+                                        <label for="id_username">Nombre de usuario:</label>
+                                        <input type="text" name="username" id="id_username" class="form-control" required>
+                                        <!-- Botón de ayuda -->
+                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-username-help">?</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="id_email">Correo electrónico:</label>
+                                        <input type="email" name="email" id="id_email" class="form-control" required>
+                                        <!-- Botón de ayuda -->
+                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-email-help">?</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="id_password1">Contraseña:</label>
+                                        <input type="password" name="password1" id="id_password1" class="form-control" required>
+                                        <!-- Botón de ayuda -->
+                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-password1-help">?</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="id_password2">Confirmar Contraseña:</label>
+                                        <input type="password" name="password2" id="id_password2" class="form-control" required>
+                                        
+                                    <div class="form-group">
+                                        <label for="id_nombre">Nombre:</label>
+                                        <input type="text" name="nombre" id="id_nombre" class="form-control" required>
+                                     
+
+                                    <div class="form-group">
+                                        <label for="id_rol">Rol:</label>
+                                        <select name="rol" id="id_rol" class="form-control" required>
+                                            <option value="">Selecciona un rol</option>
+                                            {% for rol in roles %}
+                                            <option value="{{ rol.id }}">{{ rol.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        
+                                    </div>
+                                </fieldset>
+                                <br>
+                                
+                                <!-- Campos adicionales para Persona -->
+                                <fieldset id="persona-fields" class="hidden">
+                                    <legend>Datos de Persona</legend>
+                                    <div class="form-group">
+                                        <label for="id_apellidos">Apellidos:</label>
+                                        <input type="text" name="apellidos" id="id_apellidos" class="form-control" maxlength="100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_telefono">Teléfono:</label>
+                                        <input type="text" name="telefono" id="id_telefono" class="form-control" maxlength="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_dni">DNI:</label>
+                                        <input type="text" name="dni" id="id_dni" class="form-control" maxlength="11">
+                                    </div>
+                                </fieldset>
+                                
+                                <!-- Campos adicionales para Comercio -->
+                                <fieldset id="comercio-fields" class="hidden">
+                                    <legend>Datos de Comercio</legend>
+                                    <div class="form-group">
+                                        <label for="id_rut">RUT:</label>
+                                        <input type="text" name="rut" id="id_rut" class="form-control" maxlength="11">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_encargue">Encargue:</label>
+                                        <select name="encargue" id="id_encargue" class="form-control">
+                                            <option value="">Selecciona un encargue</option>
+                                            {% for encargue in encargues %}
+                                            <option value="{{ encargue.id }}">{{ encargue.producto.nombre}} - {{ encargue.fecha}} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Registrar</button>
+                                    <a href="{% url 'listar_clientes' %}" class="btn btn-warning ms-2">Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Modales de ayuda -->
+<div class="modal fade" id="modal-username-help" tabindex="-1" role="dialog" aria-labelledby="modal-username-help-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-username-help-label">Ayuda: Nombre de Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                El nombre de usuario es único y será utilizado para el inicio de sesión. Debe tener al menos 6 caracteres.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Puedes agregar modales similares para otros campos (email, password, etc.) -->
+<!-- Aquí te dejo los modales de ejemplo para los otros campos: -->
+
+<div class="modal fade" id="modal-email-help" tabindex="-1" role="dialog" aria-labelledby="modal-email-help-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-email-help-label">Ayuda: Correo Electrónico</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ingresa un correo electrónico válido. Este correo se usará para notificaciones y recuperación de cuenta.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-password1-help" tabindex="-1" role="dialog" aria-labelledby="modal-password1-help-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-password1-help-label">Ayuda: Contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
+                    <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                    <li>Su contraseña no puede ser una clave utilizada comúnmente.</li>
+                    <li>Su contraseña no puede ser completamente numérica.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Repite el mismo patrón para otros campos como contraseña, rol, etc. -->
+
+{% endblock %}
+
+{% block footer %}
+    <script>
+        // Define los IDs correspondientes para los roles
+        const PERSONA_ROLE_ID = '{{ persona_role_id }}';
+        const COMERCIO_ROLE_ID = '{{ comercio_role_id }}';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const rolSelect = document.getElementById('id_rol');
+            const personaFields = document.getElementById('persona-fields');
+            const comercioFields = document.getElementById('comercio-fields');
+
+            function updateFields() {
+                const rolId = rolSelect.value;
+
+                personaFields.style.display = (rolId === PERSONA_ROLE_ID) ? 'block' : 'none';
+                comercioFields.style.display = (rolId === COMERCIO_ROLE_ID) ? 'block' : 'none';
+            }
+
+            rolSelect.addEventListener('change', updateFields);
+
+            // Inicializar el estado de los campos cuando se carga la página
+            updateFields();
+        });
+    </script>
+    {{ block.super }}
+{% endblock %}

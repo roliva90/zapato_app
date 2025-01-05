@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+ Editar Encargado
+{% endblock %}
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Editar Encargado</h1>
+                            <form method="post">
+                                {% csrf_token %}
+
+                                <!-- Campo: Nombre -->
+                                <div class="mb-3">
+                                    <label for="id_nombre" class="form-label">Nombre:</label>
+                                    <input id="id_nombre" type="text" class="form-control" name="nombre" maxlength="100"
+                                        required value="{{ form.nombre.value }}">
+                                </div>
+                                <!-- Campo: Apellido -->
+                                <div class="mb-3">
+                                    <label for="id_apellido" class="form-label">Apellido:</label>
+                                    <input id="id_apellido" type="text" class="form-control" name="apellido"
+                                        maxlength="100" required value="{{ form.apellido.value }}">
+                                </div>
+                                <!-- Campo:Telefono -->
+                                <div class="mb-3">
+                                    <label for="id_telefono" class="form-label">Telefono:</label>
+                                    <input id="id_telefono" type="number" class="form-control" name="telefono"
+                                        maxlength="100" required value="{{ form.telefono.value }}">
+                                </div>
+
+                                <!-- Campo: Direccion -->
+                                <div class="mb-3">
+                                    <label for="id_direccion" class="form-label">Direccion:</label>
+                                    <input id="id_direccion" type="text" class="form-control" name="direccion"
+                                        step="0.01" required value="{{ form.direccion.value }}">
+                                </div>
+                                <!-- Botones -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href="{% url 'listar_encargados' %}" class="btn btn-warning ms-2">Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

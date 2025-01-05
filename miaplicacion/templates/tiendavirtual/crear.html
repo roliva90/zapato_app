@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Crear Tienda Virtual
+{% endblock %}
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Crear Tienda Virtual</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="id_nombre" class="form-label">Nombre:</label>
+                                    <input id="id_nombre" type="text" class="form-control" name="nombre" maxlength="100" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_url" class="form-label">URL:</label>
+                                    <input id="id_url" type="url" class="form-control" name="url" maxlength="100" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_encargado" class="form-label">Encargado:</label>
+                                    <select id="id_encargado" class="form-control" name="encargado" required>
+                                        <option value="" selected disabled>Selecciona un encargado</option>
+                                        {% for encargado in encargados %}
+                                            <option value="{{ encargado.id }}">{{ encargado.nombre }} {{ encargado.apellido }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href="{% url 'listar_tiendavirtual' %}" class="btn btn-warning ms-2">Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Editar Datos del Cliente
+{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Editar Datos del Cliente</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                <div>
+                                    <label for="id_nombre">Nombre:</label>
+                                    <input type="text" name="nombre" id="id_nombre" class="form-control"
+                                        value="{{ cliente.nombre }}" required>
+                                </div>
+
+                                {% if cliente.persona %}
+                                <div class="mb-3">
+                                    <label for="id_persona_apellidos">Apellidos:</label>
+                                    <input type="text" name="apellidos" id="id_persona_apellidos" class="form-control"
+                                        value="{{ cliente.persona.apellidos }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_persona_telefono">Teléfono:</label>
+                                    <input type="text" name="telefono" id="id_persona_telefono" class="form-control"
+                                        value="{{ cliente.persona.telefono }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_persona_dni">DNI:</label>
+                                    <input type="text" name="dni" id="id_persona_dni" class="form-control"
+                                        value="{{ cliente.persona.dni }}">
+                                </div>
+                                {% endif %}
+
+                                {% if cliente.comercio %}
+                                <div class="mb-3">
+                                    <label for="id_comercio_rut">Rut del Comercio:</label>
+                                    <input type="text" name="rut" id="id_comercio_rut" class="form-control"
+                                        value="{{ cliente.comercio.rut }}" required>
+                                </div>
+                                
+                                {% if encargues %}
+                                <div class="mb-3">
+                                    <label for="id_encargue">Seleccionar Encargo:</label>
+                                    <select name="encargue" id="id_encargue" class="form-control">
+                                        {% for encargue in encargues %}
+                                        <option value="{{ encargue.id }}" {% if encargue.id == cliente.comercio.encargue.id %}selected{% endif %}>
+                                            {{ encargue.producto.nombre }}
+                                        </option>
+                                        {% empty %}
+                                        <option value="">No hay encargos disponibles</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                {% endif %}
+                                {% endif %}
+
+                                <div class="mb-3">
+                                    <label for="id_email">Email:</label>
+                                    <input type="email" name="email" id="id_email" class="form-control"
+                                        value="{{ cliente.email }}" required>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                    <a href="{% url 'listar_clientes' %}" class="btn btn-secondary">Cancelar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Listado de Tienda Virtual</title>
+{% endblock %}
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title" align="center">Listado de Tienda Virtual</h1>
+                            {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+                            <a href="{% url 'crear_tiendavirtual' %}" class="btn btn-success btn-round ml-auto"><i class="fa fa-plus"></i>&nbsp;Insertar</a>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>URL</th>
+                                            <th>Encargado</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tiendavirtual in tiendavirtual %}
+                                        <tr>
+                                            <td>{{ tiendavirtual.nombre }}</td>
+                                            <td>{{ tiendavirtual.url }}</td>
+                                            <td>{{ tiendavirtual.encargado.nombre }} {{ tiendavirtual.encargado.apellido}}</td>
+                                            <td>
+                                                <a href="{% url 'editar_tiendavirtual' tiendavirtual.id %}"
+                                                    class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#confirmDeleteModal-{{ tiendavirtual.id }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <div class="modal fade" id="confirmDeleteModal-{{ tiendavirtual.id }}"
+                                                    tabindex="-1" role="dialog"
+                                                    aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirmDeleteModalLabel">
+                                                                    Confirmar Eliminación</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar la Tienda Virtual
+                                                                "<strong>{{ tiendavirtual.nombre }}</strong>"?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Cancelar</button>
+                                                                <form
+                                                                    action="{% url 'eliminar_tiendavirtual' tiendavirtual.id %}"
+                                                                    method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="submit" class="btn btn-danger"
+                                                                        value="Eliminar" />
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script src="{% static 'path/to/jquery.js' %}"></script>
+<script src="{% static 'path/to/bootstrap.js' %}"></script>
+{% endblock %}

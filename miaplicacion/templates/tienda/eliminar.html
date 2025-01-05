@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>{% block head %} {{block.super}} {% endblock %} </head>
+
+<body>
+    <header>{% block header %} {{block.super}} {% endblock %} </header>
+    {% block content %}
+    <div class="container py-4">
+        <div class="card bg-light mx-auto" style="max-width: 400px;">
+        <div class="card-header">
+            <h2 align="center">Eliminar Tienda</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group text-center">
+                    <p align="center">¿Usted Esta seguro de eliminar {{tienda.id}}?</p>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a href="{% url 'listar_tiendas' %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+    <footer>{% block footer %} {{block.super}} {% endblock %} </footer>
+</body>
+
+</html>

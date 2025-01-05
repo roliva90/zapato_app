@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Crear Compra-Persona
+{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title text-center mb-4">Nueva Compra</h1>
+                            
+                            <!-- Mensajes de error del formulario -->
+                            {% if form.errors %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>¡Error!</strong> Por favor corrija los siguientes errores:
+                                    <ul>
+                                        {% for field, errors in form.errors.items %}
+                                            {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+
+                            <form method="post">
+                                {% csrf_token %}
+                                
+                                <!-- Campo: Cantidad -->
+                                <div class="mb-3">
+                                    <label for="id_cantidadS" class="form-label">Cantidad Solicitada:</label>
+                                    <input id="id_cantidadS" type="text" class="form-control" name="cantidadS" min="1" oninput="actualizarMonto()" required>
+                                </div>
+
+                                <!-- Campo: Factura -->
+                                <div class="mb-3">
+                                    <label for="id_factura" class="form-label">Código de Factura:</label>
+                                    <input id="id_factura" type="text" class="form-control" name="factura" maxlength="100" required>
+                                </div>
+
+                                <!-- Campo: Monto (solo lectura) -->
+                                <div class="mb-3">
+                                    <label for="id_monto" class="form-label">Monto Total:</label>
+                                    <input id="id_monto" type="text" class="form-control" name="monto" value="0" readonly>
+                                </div>
+
+                                <!-- Campo: Producto (oculto) -->
+                                <input type="hidden" name="producto" value="{{ producto.id }}">
+                                <input type="hidden" id="precio_producto" value="{{ producto.precio|floatformat:2 }}">
+
+                                <!-- Botones -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href="{% url 'listar_productos' %}" class="btn btn-warning ms-2">Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}
+<script>
+    // Obtener el precio del producto desde el campo oculto y reemplazar la coma por un punto
+    function obtenerPrecio() {
+        var precioStr = document.getElementById('precio_producto').value;
+        // Reemplazar la coma por un punto
+        return parseFloat(precioStr.replace(',', '.')) || 0;
+    }
+
+    // Función para actualizar el monto basado en la cantidad y el precio del producto
+    function actualizarMonto() {
+        // Obtener el precio del producto
+        var precio = obtenerPrecio();
+        
+        // Obtener el valor de la cantidad
+        var cantidad = parseFloat(document.getElementById('id_cantidadS').value) || 0;
+        
+        // Calcular el monto
+        var monto = cantidad * precio;
+        
+        // Actualizar el campo de monto
+        document.getElementById('id_monto').value = monto.toFixed(2);
+    }
+    
+    // Llamar a la función para establecer el monto inicial al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        actualizarMonto();
+    });
+</script>
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Listado de Sucursal</title>
+{% endblock %}
+{% block content %}
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <h1 class="card-title" align="center">Listado de Sucursal</h1>
+                            {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+                            <a href="{% url 'crear_sucursal' %}" class="btn btn-success btn-round ml-auto"><i class="fa fa-plus"></i>&nbsp;Insertar</a>
+                            </h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Encargado</th>
+                                            <th>Direccion</th>
+                                            <th>Telefono</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for sucursal in sucursales %}
+                                        <tr>
+                                            <td>{{sucursal.nombre}}</td>
+                                            <td>{{sucursal.encargado.nombre}} {{sucursal.encargado.apellido}}</td>
+                                            <td>{{sucursal.direccion}}</td>
+                                            <td>{{sucursal.telefono}}</td>
+                                            <td>
+                                                <a href="{% url 'editar_sucursal' sucursal.id %}"
+                                                    class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
+                                                <!-- Botón que activa el modal -->
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#confirmDeleteModal-{{sucursal.id }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="confirmDeleteModal-{{ sucursal.id }}"
+                                                    tabindex="-1" role="dialog"
+                                                    aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirmDeleteModalLabel">
+                                                                    Confirmar Eliminación</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar la Sucursal
+                                                                "<strong>{{sucursal.nombre }}</strong>"?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">
+                                                                    Cancelar
+                                                                </button>
+                                                                <form action="{% url 'eliminar_sucursal' sucursal.id %}"
+                                                                    method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="submit" class="btn btn-danger"
+                                                                        value="Eliminar" />
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Asegúrate de que tienes los scripts de Bootstrap y jQuery incluidos en tu base.html -->
+{% block extra_js %}
+<script>
+    $(document).ready(function () {
+        // Este bloque puede ser útil si necesitas añadir alguna funcionalidad extra al modal
+    });
+</script>
+{% endblock %}
+{% endblock %}

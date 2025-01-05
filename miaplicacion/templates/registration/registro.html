@@ -1,0 +1,130 @@
+<!-- registro.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="font-weight-light my-4"><strong>Registro de Usuario</strong></h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> Por favor, corrige los siguientes errores.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <ul>
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="form-group">
+                            <label for="id_username">Nombre de usuario <button type="button" class="btn btn-sm btn-info ml-1" data-toggle="modal" data-target="#usernameHelpModal">Sugerencia</button></label>
+                            <input type="text" id="id_username" name="username" class="form-control form-control-lg" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_first_name">Nombre:</label>
+                            <input type="text" id="id_first_name" name="first_name" class="form-control form-control-lg">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_last_name">Apellidos:</label>
+                            <input type="text" id="id_last_name" name="last_name" class="form-control form-control-lg">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email">Dirección de correo electrónico <button type="button" class="btn btn-sm btn-info ml-1" data-toggle="modal" data-target="#emailHelpModal">Sugerencia</button></label>
+                            <input type="email" id="id_email" name="email" class="form-control form-control-lg" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password">Contraseña <button type="button" class="btn btn-sm btn-info ml-1" data-toggle="modal" data-target="#passwordHelpModal">Sugerencia</button></label>
+                            <input type="password" id="id_password" name="password1" class="form-control form-control-lg" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password2">Confirmar contraseña:</label>
+                            <input type="password" id="id_password2" name="password2" class="form-control form-control-lg" required>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small><a href="{% url 'index' %}" class="text-secondary">Ir al Home</a> | <a href="{% url 'registro' %}" class="text-secondary">Regístrate</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modales de ayuda -->
+<div class="modal fade" id="usernameHelpModal" tabindex="-1" role="dialog" aria-labelledby="usernameHelpModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="usernameHelpModalLabel">Ayuda - Nombre de usuario</h5>
+            </div>
+            <div class="modal-body">
+                <p>Requerido. 150 caracteres como máximo. Únicamente letras, dígitos y @/./+/-/_</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="emailHelpModal" tabindex="-1" role="dialog" aria-labelledby="emailHelpModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailHelpModalLabel">Ayuda - Dirección de correo electrónico</h5>
+            </div>
+            <div class="modal-body">
+                <p>Ejemplo: correo@ejemplo.com</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="passwordHelpModal" tabindex="-1" role="dialog" aria-labelledby="passwordHelpModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordHelpModalLabel">Ayuda - Contraseña</h5>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
+                    <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                    <li>Su contraseña no puede ser una clave utilizada comúnmente.</li>
+                    <li>Su contraseña no puede ser completamente numérica.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Inicialización de tooltips de Bootstrap
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+{% endblock %}
