@@ -1,5 +1,5 @@
 import os
-import dj_database_url
+
 """
 Django settings for zapato project.
 
@@ -81,15 +81,15 @@ WSGI_APPLICATION = 'zapato.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:postgres@localhost:5432/zapato',
-        conn_max_age=600
-    )  
-    
+        default=os.environ.get('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/zapato_db'),
+        conn_max_age=600,  # Mantiene las conexiones abiertas
+        ssl_require=True   # Requiere SSL en producción (opcional, según Render)
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
